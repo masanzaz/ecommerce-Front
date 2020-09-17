@@ -1,6 +1,8 @@
+import { Products } from './../models/products';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +16,20 @@ export class ProductService {
   showMessage() {
   }
 
-  getAllProducts(limitOfResults=10){
-    return this.http.get(this.server_url + 'products', {
+  getAllProducts(limitOfResults=10): Observable<Products[]>{
+    return this.http.get<Products[]>(this.server_url + 'products', {
       params: {
         limit: limitOfResults.toString()
       }
     });
   }
   
-  getAllProductById() {
-    
+  getProductById(id: number): Observable<Products> {
+    return this.http.get<Products>(this.server_url + 'products' + id);
+  }
+
+  getProductByCategory(categoryId: number): Observable<Products[]> {
+    return this.http.get<Products[]>(this.server_url + 'products/' + categoryId + 'category');
   }
   
 }
